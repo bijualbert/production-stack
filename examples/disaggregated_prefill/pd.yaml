@@ -33,7 +33,7 @@ servingEngineSpec:
         nixlEnableGc: true
         enablePD: true
         cpuOffloadingBufferSize: 0
-      hf_token: <your-hf-token>
+      hf_token: <REPLACE_WITH_YOUR_HF_TOKEN>
       labels:
         model: "llama-prefill"
     # Decode node configuration
@@ -63,7 +63,7 @@ servingEngineSpec:
         nixlBufferDevice: "cuda"
         nixlEnableGc: true
         enablePD: true
-      hf_token: <your-hf-token>
+      hf_token: <REPLACE_WITH_YOUR_HF_TOKEN>
       labels:
         model: "llama-decode"
 routerSpec:

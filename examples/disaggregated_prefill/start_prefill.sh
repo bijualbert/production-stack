@@ -19,7 +19,7 @@ docker run --runtime nvidia --gpus all \
     --env "UCX_TLS=cuda,tcp" \
     --ipc host \
     --cap-add CAP_SYS_PTRACE --shm-size="8g" \
-    -v ~/.cache/huggingface:/root/.cache/huggingface \
+    # -v ~/.cache/huggingface:/root/.cache/huggingface  # <REPLACE_WITH_YOUR_HF_TOKEN_OR_PATH>
     --network host \
     --name master \
     $IMAGE \
