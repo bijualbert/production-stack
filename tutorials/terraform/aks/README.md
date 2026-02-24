@@ -1,6 +1,6 @@
 # 🚀 Deploying vLLM Production Stack on Azure Kubernetes Service With Terraform
 
-This guide walks you through deploying a GPU-accelerated vLLM Production Stack on Azure Kubernetes Service using Terraform. You'll create a complete infrastructure with specialized node pools for ML workloads and management services.
+This guide walks you through deploying a GPU-accelerated vLLM Production Stack on Azure Kubernetes Service using Terraform. You'll create a complete infrastructure with specialized node pools for ML workloads and management services. Optionally, the router layer can be deployed as a zero-maintenance Serverless distribution point on platforms like Vercel.
 
 ## 📋 Project Structure
 
