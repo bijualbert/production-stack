@@ -4,7 +4,9 @@
 
 ## Latest News
 
-- 📄 [Official documentation](https://docs.vllm.ai/projects/production-stack) released for production-stack!
+- � Added robust support for **Vercel Serverless deployments** utilizing the `@vercel/python` builder configuration.
+- 🛠️ Enhanced CI/CD pipelines with robust GitHub Actions release rebasing and native **ShellCheck** pre-commit hooks.
+- �📄 [Official documentation](https://docs.vllm.ai/projects/production-stack) released for production-stack!
 - ✨ [Cloud Deployment Tutorials](https://github.com/vllm-project/production-stack/blob/main/tutorials) for Lambda Labs, AWS EKS, Google GCP are out!
 - 🛤️ 2025 Q1 roadmap is released! [Join the discussion now](https://github.com/vllm-project/production-stack/issues/26)!
 - 🔥 vLLM Production Stack is released! Check out our [release blogs](https://blog.lmcache.ai/2025-01-21-stack-release) posted on January 22, 2025.
