@@ -1,6 +1,7 @@
 #!/bin/bash
 
 IMAGE=lmcache/vllm-openai:2025-05-27-v1
+# -v ~/.cache/huggingface:/root/.cache/huggingface  # <REPLACE_WITH_YOUR_HF_TOKEN_OR_PATH>
 docker run --runtime nvidia --gpus all \
     --env "LMCACHE_LOG_LEVEL=DEBUG" \
     --env "LMCACHE_ENABLE_NIXL=True" \
@@ -19,7 +20,6 @@ docker run --runtime nvidia --gpus all \
     --env "UCX_TLS=cuda,tcp" \
     --ipc host \
     --cap-add CAP_SYS_PTRACE --shm-size="8g" \
-    # -v ~/.cache/huggingface:/root/.cache/huggingface  # <REPLACE_WITH_YOUR_HF_TOKEN_OR_PATH>
     --network host \
     --name master \
     $IMAGE \
