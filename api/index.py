@@ -7,9 +7,15 @@ sys.path.insert(
 )
 
 try:
-    from vllm_router.app import app  # type: ignore
+    from vllm_router.app import app as router_app  # type: ignore
 except ImportError:
     # Fallback to local import if packaging fails in Vercel
-    from src.vllm_router.app import app  # type: ignore
+    from src.vllm_router.app import app as router_app  # type: ignore
 
 # This is the FastAPI entrypoint for Vercel.
+# Vercel's static analyzer requires finding a literal `app = FastAPI()` 
+# assignment in this file to recognize it as a serverless function.
+from fastapi import FastAPI
+
+app = FastAPI()
+app.mount("/", router_app)
