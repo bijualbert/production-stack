@@ -5,9 +5,9 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 try:
-    from vllm_router.app import app
+    from vllm_router.app import app  # type: ignore
 except ImportError:
     # Fallback to local import if packaging fails in Vercel
-    from src.vllm_router.app import app
+    from src.vllm_router.app import app  # type: ignore
 
 # This is the FastAPI entrypoint for Vercel.
