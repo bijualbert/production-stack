@@ -33,6 +33,7 @@ dependencies = [
 
 [project.scripts]
 vllm-router = "vllm_router.app:main"
+app = "api.index:app"
 
 [project.urls]
 Repository = "https://github.com/vllm-project/production-stack"
