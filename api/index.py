@@ -108,6 +108,14 @@ def healthz():
         }
     return {"status": "ok"}
 
+@app.get("/")
+def root():
+    # Shows a friendly message instead of 404
+    return {
+        "service": "production-stack router",
+        "initialized": _initialized,
+        "try": ["/healthz", "/docs", "/openapi.json", "/v1/models"]
+    }
 
 # Mount the real router at /
 app.mount("/", router_app)
