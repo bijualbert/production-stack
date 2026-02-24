@@ -89,9 +89,7 @@ jobs:
           # Commit the version bump
           git add helm/Chart.yaml
           git commit -m "Bump Helm chart version to ${NEW_VERSION}"
-          
-          # Pull latest changes with rebase to avoid non-fast-forward errors
-          git pull --rebase origin main
+          git pull --rebase
           git push
 
       - name: Create Release Tag
