@@ -95,7 +95,7 @@ def main():
     qps_per_worker = args.qps / args.num_workers
 
     processes = []
-    api_key = "YOUR_API_KEY_HERE"
+    api_key = os.environ.get("OPENAI_API_KEY", "test-key")
     base_url = "http://localhost:8000/v1"
     model = "fake_model_name"
 
