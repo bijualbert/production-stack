@@ -386,7 +386,10 @@ async def route_general_request(
         f"Debug session extraction - Router type: {type(request.app.state.router).__name__}"
     )
     logger.debug(f"Debug session extraction - Session key config: {session_key}")
-    logger.debug(f"Debug session extraction - Request headers: {dict(request.headers)}")
+    logger.debug(
+        "Debug session extraction - Request headers: %s",
+        {k: v for k, v in request.headers.items() if k.lower() != "authorization"},
+    )
     logger.debug(f"Debug session extraction - Extracted session ID: {session_id}")
 
     logger.info(
