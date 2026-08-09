@@ -153,7 +153,7 @@ def initialize_all(app: FastAPI, args):
     if sentry_dsn := args.sentry_dsn:
         sentry_sdk.init(
             dsn=sentry_dsn,
-            send_default_pii=True,
+            send_default_pii=False,
             profile_lifecycle="trace",
             traces_sample_rate=args.sentry_traces_sample_rate,
             profile_session_sample_rate=args.sentry_profile_session_sample_rate,

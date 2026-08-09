@@ -1,6 +1,6 @@
+import json
 import logging
 import os
-import pickle
 from typing import Any, Dict, List, Optional
 
 import faiss
@@ -30,10 +30,10 @@ class FAISSAdapter(VectorDBAdapterBase):
         if cache_dir:
             os.makedirs(cache_dir, exist_ok=True)
             self.index_file = os.path.join(cache_dir, index_file)
-            self.metadata_file = os.path.join(cache_dir, "faiss_metadata.pkl")
+            self.metadata_file = os.path.join(cache_dir, "faiss_metadata.json")
         else:
             self.index_file = index_file
-            self.metadata_file = "faiss_metadata.pkl"
+            self.metadata_file = "faiss_metadata.json"
 
         if os.path.exists(self.index_file) and os.path.exists(self.metadata_file):
             self.load_index()
@@ -48,8 +48,8 @@ class FAISSAdapter(VectorDBAdapterBase):
         """Load the FAISS index and metadata from disk."""
         try:
             self.index = faiss.read_index(self.index_file)
-            with open(self.metadata_file, "rb") as f:
-                self.metadata = pickle.load(f)
+            with open(self.metadata_file, "r", encoding="utf-8") as f:
+                self.metadata = json.load(f)
             logger.info(f"Loaded FAISS index with {self.index.ntotal} entries")
         except Exception as e:
             logger.error(f"Error loading FAISS index: {str(e)}")
@@ -62,8 +62,8 @@ class FAISSAdapter(VectorDBAdapterBase):
         """Save the FAISS index and metadata to disk."""
         try:
             faiss.write_index(self.index, self.index_file)
-            with open(self.metadata_file, "wb") as f:
-                pickle.dump(self.metadata, f)
+            with open(self.metadata_file, "w", encoding="utf-8") as f:
+                json.dump(self.metadata, f)
             logger.debug(f"Saved FAISS index with {self.index.ntotal} entries")
         except Exception as e:
             logger.error(f"Error saving FAISS index: {str(e)}")

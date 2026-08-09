@@ -1,6 +1,6 @@
 servingEngineSpec:
   runtimeClassName: ""
-  vllmApiKey: "abc123XYZ987"
+  vllmApiKey: "${VLLM_API_KEY}"
   modelSpec:
   - name: "opt125m"
     repository: "vllm/vllm-openai"

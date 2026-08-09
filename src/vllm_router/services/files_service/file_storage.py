@@ -35,15 +35,32 @@ class FileStorage(Storage):
     """
 
     def __init__(self, base_path: str = "/tmp/vllm_files"):
-        self.base_path = base_path
-        logger.info("Initialize FileStorage with base path %s", base_path)
-        os.makedirs(base_path, exist_ok=True)
+        self.base_path = os.path.realpath(base_path)
+        logger.info("Initialize FileStorage with base path %s", self.base_path)
+        os.makedirs(self.base_path, exist_ok=True)
 
     def _get_user_path(self, user_id: str) -> str:
         """Get user-specific directory path"""
         user_path = os.path.join(self.base_path, user_id)
+        self._validate_path(user_path)
         os.makedirs(user_path, exist_ok=True)
         return user_path
+
+    def _validate_path(self, path: str) -> None:
+        """Validate that the resolved path stays within the base directory.
+
+        Prevents path traversal attacks where crafted file_id or user_id
+        values (e.g. '../../etc/passwd') could escape the storage root.
+        """
+        resolved = os.path.realpath(path)
+        if (
+            not resolved.startswith(self.base_path + os.sep)
+            and resolved != self.base_path
+        ):
+            raise ValueError(
+                f"Path traversal detected: resolved path '{resolved}' "
+                f"is outside base path '{self.base_path}'"
+            )
 
     async def save_file(
         self,
@@ -62,6 +79,7 @@ class FileStorage(Storage):
         # Save file to disk. File name is the same as file_id.
         user_path = self._get_user_path(user_id)
         file_path = os.path.join(user_path, file_id)
+        self._validate_path(file_path)
         async with aiofiles.open(file_path, "wb") as f:
             await f.write(content)
 
@@ -88,6 +106,7 @@ class FileStorage(Storage):
         """Save file chunk to disk at specified offset"""
         user_path = self._get_user_path(user_id)
         file_path = os.path.join(user_path, file_id)
+        self._validate_path(file_path)
         async with aiofiles.open(file_path, "r+b") as f:
             await f.seek(offset)
             await f.write(chunk)
@@ -98,6 +117,7 @@ class FileStorage(Storage):
         """Retrieve file metadata from disk"""
         user_path = self._get_user_path(user_id)
         file_path = os.path.join(user_path, file_id)
+        self._validate_path(file_path)
         if not os.path.exists(file_path):
             logger.error(f"File {file_id} not found, returning empty file")
             raise FileNotFoundError(f"File {file_id} not found")
@@ -118,6 +138,7 @@ class FileStorage(Storage):
         """Retrieve file content from disk"""
         user_path = self._get_user_path(user_id)
         file_path = os.path.join(user_path, file_id)
+        self._validate_path(file_path)
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"File {file_id} not found")
         async with aiofiles.open(file_path, "rb") as f:
@@ -132,5 +153,6 @@ class FileStorage(Storage):
         """Delete file from disk"""
         user_path = self._get_user_path(user_id)
         file_path = os.path.join(user_path, file_id)
+        self._validate_path(file_path)
         if os.path.exists(file_path):
             os.remove(file_path)
